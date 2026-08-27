@@ -1,0 +1,16 @@
+[package]
+name = "psychoraycaster"
+version = "0.1.0"
+edition = "2021"
+description = "Ray caster psicodélico estilo BrainPOP - Proyecto de Graficas por Computadora"
+
+# opt-level alto incluso en modo debug: el raycasting columna por columna
+# es costoso en debug puro y esto evita caidas de FPS al probar con `cargo run`.
+[profile.dev]
+opt-level = 2
+
+[dependencies]
+# Ventana + framebuffer + teclado + mouse, sin depender de un motor grafico pesado.
+minifb = "0.27"
+# Sintetizador/reproductor de audio para la musica de fondo psicodelica generada por codigo.
+rodio = { version = "0.19", default-features = false, features = ["wav"] }
