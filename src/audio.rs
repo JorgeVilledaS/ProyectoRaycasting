@@ -1,21 +1,16 @@
 // audio.rs
 // Carga y reproduce en loop un archivo .wav externo como musica de fondo.
-// El archivo NO se genera por codigo: el usuario debe colocar su propio
-// archivo en `assets/background_music.wav` (ver README).
+// archivo en `assets/background_music.wav`.
 
 use rodio::{Decoder, OutputStream, Sink, Source};
 use std::fs::File;
 use std::io::BufReader;
 use std::path::Path;
 
-/// Ruta donde el juego busca la musica de fondo. Se puede reemplazar por
-/// cualquier archivo .wav propio; basta con sobrescribir este archivo.
+/// Ruta donde el juego busca la musica de fondo.
 const MUSIC_PATH: &str = "assets/background_music.wav";
 
-/// Mantiene vivos el stream y el sink de audio mientras dura la partida
-/// (si se dropean, el sonido se corta). Es Option a nivel de main porque
-/// el juego debe poder seguir funcionando aunque no haya audio disponible
-/// (sin tarjeta de sonido, o sin el archivo .wav puesto).
+/// Mantiene vivos el stream y el sink de audio 
 pub struct AudioSystem {
     _stream: OutputStream,
     sink: Sink,
@@ -23,9 +18,6 @@ pub struct AudioSystem {
 
 impl AudioSystem {
     /// Intenta abrir el dispositivo de audio y cargar `assets/background_music.wav`
-    /// en loop infinito. Si algo falla (no hay tarjeta de sonido, o no existe el
-    /// archivo), se imprime un aviso en consola y se devuelve `None`: el juego
-    /// continua sin musica en vez de crashear.
     pub fn start() -> Option<Self> {
         let (stream, handle) = match OutputStream::try_default() {
             Ok(v) => v,
@@ -72,7 +64,7 @@ impl AudioSystem {
         Some(AudioSystem { _stream: stream, sink })
     }
 
-    /// Pausa/reanuda la musica (por ejemplo al entrar/salir de la pantalla de bienvenida).
+    /// Pausa/reanuda la musica 
     pub fn set_playing(&self, playing: bool) {
         if playing {
             self.sink.play();
