@@ -63,12 +63,12 @@ cargo run --release
 El mapa es una arena abierta con bloques de colores flotando (cada bloque es un
 tipo de pared distinto, con su propia textura animada). En el centro hay una
 diana psicodélica con forma de hongo que gira sobre sí misma. Al llegar a la
-esquina inferior derecha del mapa se activa la pantalla de **nivel completado**,
+esquina inferior derecha del mapa se activa la pantalla de nivel completado,
 que muestra cuántos impactos hiciste y te deja reiniciar con `R`.
 
 El "plotwist" o lo que hace interesante el nivel, es que al darle un tiro a la diana (Con forma de hongo) los controles se invierten, así como los colores de todo el mapa, para darle una sensación aún más extraña al nivel.
 
-El contador de **FPS** actual se muestra en la esquina superior izquierda durante
+El contador de FPS actual se muestra en la esquina superior izquierda durante
 la partida.
 
 ## Estructura del proyecto

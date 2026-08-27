@@ -1,6 +1,7 @@
 // textures.rs
 // En vez de cargar archivos de imagen, cada tipo de pared se pinta con una
 // textura PROCEDURAL (generada por formulas matematicas / ruido de senos).
+// Encontré una guía en reddit para probar diferentes tipos de texturas con esta idea procedural en mente.
 //
 // Cada funcion recibe:
 //   u, v  -> coordenadas dentro de la pared (0.0 a 1.0)
