@@ -1,11 +1,5 @@
 // font.rs
-// Fuente de mapa de bits, muy simple, de 5 columnas x 7 filas por caracter.
-// Existe para poder dibujar texto legible (titulos, instrucciones) sin
-// depender de una libreria externa de fuentes/TTF, mantiendo el proyecto
-// simple como pide el enunciado.
-//
-// Solo cubre mayusculas, digitos basicos y espacio: lo suficiente para los
-// textos de la interfaz de este proyecto.
+// No quería depender de fuentes o librerías externas entonces preferí hacer un mapa de bits para mayúsculas.
 
 /// Devuelve el patron de 7 filas (cada fila es un &str de 5 caracteres,
 /// '#' = pixel encendido, '.' = apagado) para una letra dada.
@@ -49,9 +43,7 @@ fn glyph(c: char) -> [&'static str; 7] {
     }
 }
 
-/// Dibuja `text` en el framebuffer empezando en (x0, y0), con cada pixel de
-/// la fuente escalado a `scale` pixeles reales, en el color `color`.
-/// Se salta a la siguiente letra dejando 1 columna de espacio entre ellas.
+/// Dibuja `text` en el framebuffer empezando en (x0, y0)
 pub fn draw_text(
     buffer: &mut [u32],
     screen_w: usize,

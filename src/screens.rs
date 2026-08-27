@@ -1,15 +1,10 @@
 // screens.rs
-// Pantallas de la maquina de estados del juego que no son la escena 3D:
-// por ahora, la pantalla de bienvenida. Se dibuja con un fondo psicodelico
-// animado (reutilizando textures.rs) y texto real hecho con la mini fuente
-// de pixeles de font.rs (ver font.rs) para que se lea con claridad.
+// Pantallas de la maquina de estados
 
 use crate::font;
 use crate::textures;
 
-/// Dibuja el fondo animado de la pantalla de bienvenida: un plasma a pantalla
-/// completa que cambia con el tiempo, mismo lenguaje visual que las paredes
-/// del nivel para que la transicion a "jugar" se sienta coherente.
+/// Dibuja el fondo animado de la pantalla de bienvenida
 pub fn draw_welcome_background(buffer: &mut [u32], screen_w: usize, screen_h: usize, time: f32) {
     for y in 0..screen_h {
         let v = y as f32 / screen_h as f32;
@@ -20,8 +15,7 @@ pub fn draw_welcome_background(buffer: &mut [u32], screen_w: usize, screen_h: us
     }
 }
 
-/// Dibuja un rectangulo lleno de un color solido (usado para el panel de
-/// fondo del texto, para que se lea bien encima del plasma animado).
+/// Dibuja un rectangulo lleno de un color solido para darle fondo al texto.
 fn fill_rect(buffer: &mut [u32], screen_w: usize, screen_h: usize, x0: i32, y0: i32, w: i32, h: i32, color: u32) {
     for y in y0..(y0 + h) {
         if y < 0 || y as usize >= screen_h {
@@ -45,7 +39,6 @@ fn draw_centered(buffer: &mut [u32], screen_w: usize, screen_h: usize, text: &st
 
 /// Dibuja el panel completo de la pantalla de bienvenida: titulo del juego,
 /// instrucciones de control, y un mensaje "presiona ENTER" parpadeante.
-/// Este es el splash screen pedido en los requisitos del proyecto.
 pub fn draw_welcome_panel(buffer: &mut [u32], screen_w: usize, screen_h: usize, blink_on: bool) {
     let panel_w = (screen_w as f32 * 0.72) as i32;
     let panel_h = (screen_h as f32 * 0.46) as i32;

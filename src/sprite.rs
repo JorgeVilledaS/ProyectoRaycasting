@@ -1,4 +1,3 @@
-// sprite.rs
 // La "diana" (target) es un sprite tipo billboard: siempre mira hacia la
 // camara sin importar el angulo del jugador. Sirve para probar el disparo
 // hitscan (ver `try_shoot` en main.rs) y cumple el requisito de tener al

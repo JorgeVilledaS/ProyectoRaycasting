@@ -1,8 +1,6 @@
 // textures.rs
 // En vez de cargar archivos de imagen, cada tipo de pared se pinta con una
 // textura PROCEDURAL (generada por formulas matematicas / ruido de senos).
-// Esto encaja con la tematica psicodelica/surrealista pedida (patrones tipo
-// "plasma") y evita depender de assets externos.
 //
 // Cada funcion recibe:
 //   u, v  -> coordenadas dentro de la pared (0.0 a 1.0)
@@ -87,7 +85,6 @@ pub fn tex_type_6(u: f32, v: f32, t: f32) -> u32 {
 
 /// Devuelve el color de la textura correspondiente a un tipo de pared (1..=6)
 /// en la coordenada (u, v) de esa pared, en el instante t.
-/// Si el tipo no se reconoce, cae a un magenta de "textura faltante" bien visible.
 pub fn sample_wall(wall_type: u8, u: f32, v: f32, t: f32) -> u32 {
     match wall_type {
         1 => tex_type_1(u, v, t),
@@ -100,8 +97,7 @@ pub fn sample_wall(wall_type: u8, u: f32, v: f32, t: f32) -> u32 {
     }
 }
 
-/// Genera un color de piso animado (para reforzar el look psicodelico
-/// tambien por debajo de los pies del jugador).
+/// Genera un color de piso animado 
 pub fn floor_color(u: f32, v: f32, t: f32) -> u32 {
     let base = plasma(u * 0.3, v * 0.3, t * 0.4, 1.2);
     // Se oscurece para que no compita visualmente con las paredes.

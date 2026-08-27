@@ -1,8 +1,3 @@
-// main.rs
-// Punto de entrada del proyecto. Arma la ventana, arranca el audio de
-// fondo, y corre el game loop: procesa input -> actualiza estado -> dibuja.
-//
-// Proyecto: Ray Caster psicodelico - Curso de Graficas por Computadora.
 
 mod audio;
 mod font;

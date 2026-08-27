@@ -1,9 +1,11 @@
-# Ray Caster Psicodélico 🧠🌀
+# Ray Caster Psicodélico
 
-Proyecto de **Gráficas por Computadora** — Ray Caster simple en Rust, con temática
-psicodélica/surrealista inspirada en BrainPOP/Brain Power: texturas proceduralmente
+Proyecto de Gráficas por Computadora sobre Ray Caster simple en Rust, con temática
+psicodélica/surrealista inspirada en corrientes lostmedia de internet, con texturas proceduralmente
 animadas, un piso abierto tipo arena con bloques de colores flotando, disparo
 hitscan contra una diana animada, y un punto final del nivel.
+
+El "plotwist" o lo que hace interesante el nivel, es que al darle un tiro a la diana (Con forma de hongo) los controles se invierten, así como los colores de todo el mapa, para darle una sensación aún más extraña al nivel.
 
 ![Pantalla de bienvenida](docs/screenshot_welcome.png)
 ![Jugando](docs/screenshot_gameplay.png)
@@ -27,19 +29,13 @@ sudo apt-get install -y libxkbcommon-dev libwayland-dev libxcb1-dev libx11-dev \
     libxrandr-dev libxi-dev libgl1-mesa-dev pkg-config libasound2-dev
 ```
 
-### Música de fondo (importante)
+### Música de fondo
 
-La música **no se genera por código**: el juego carga un archivo `.wav` real que tú
-debes colocar en:
+Lel juego carga un archivo `.wav` real que se debe colocar en
 
 ```
 assets/background_music.wav
 ```
-
-Copia ahí cualquier pista `.wav` (no tiene que ser larga, el juego la repite en loop
-automáticamente). Si el archivo no existe, o la máquina no tiene tarjeta de sonido,
-el juego lo detecta, imprime un aviso en la consola y sigue funcionando igual, sin
-música — nunca se cae por esto.
 
 Luego:
 
@@ -66,10 +62,11 @@ cargo run --release
 
 El mapa es una arena abierta con bloques de colores flotando (cada bloque es un
 tipo de pared distinto, con su propia textura animada). En el centro hay una
-**diana** psicodélica que gira sobre sí misma: dispárale para probar el hitscan
-(la diana destella y crece brevemente al recibir un impacto). Al llegar a la
+diana psicodélica con forma de hongo que gira sobre sí misma. Al llegar a la
 esquina inferior derecha del mapa se activa la pantalla de **nivel completado**,
 que muestra cuántos impactos hiciste y te deja reiniciar con `R`.
+
+El "plotwist" o lo que hace interesante el nivel, es que al darle un tiro a la diana (Con forma de hongo) los controles se invierten, así como los colores de todo el mapa, para darle una sensación aún más extraña al nivel.
 
 El contador de **FPS** actual se muestra en la esquina superior izquierda durante
 la partida.
@@ -90,10 +87,8 @@ src/
   font.rs         Mini fuente de píxeles 5x7, para dibujar texto real en pantalla
   screens.rs     Pantalla de bienvenida y pantalla de nivel completado
 assets/
-  background_music.wav   <- aquí debes poner tu propio archivo .wav
+  background_music.wav   
 ```
-
-Cada función incluye un comentario breve explicando su propósito.
 
 ## Objetivos del proyecto cubiertos
 
@@ -134,6 +129,5 @@ Cada función incluye un comentario breve explicando su propósito.
   como impacto. Esto reutiliza el mismo algoritmo de intersección rayo-pared
   del renderer (`cast_ray`), por eso el disparo respeta la oclusión de paredes.
 - **Sprite billboard**: la diana siempre mira de frente a la cámara sin importar
-  el ángulo del jugador, y se dibuja usando un z-buffer (una distancia de pared
-  por columna de pantalla) para quedar correctamente oculta detrás de paredes
+  el ángulo del jugador, y se dibuja usando un z-buffer para quedar correctamente oculta detrás de paredes
   más cercanas.

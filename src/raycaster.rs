@@ -9,7 +9,7 @@ use crate::player::Player;
 /// Resultado de lanzar un rayo: toda la info que necesita el renderer
 /// para pintar la columna de pantalla correspondiente.
 pub struct RayHit {
-    /// Distancia perpendicular a la pared (ya corregida de "ojo de pez").
+    /// Distancia perpendicular a la pared
     pub perp_dist: f32,
     /// Tipo de pared golpeada (1..=6), usado para elegir la textura.
     pub wall_type: u8,
@@ -20,7 +20,7 @@ pub struct RayHit {
 }
 
 /// Lanza un unico rayo desde el jugador con un angulo relativo `ray_angle`
-/// (en radianes, ya absoluto respecto al mundo) y devuelve donde impacta.
+/// y devuelve donde impacta.
 pub fn cast_ray(player: &Player, ray_angle: f32, map: &Map) -> RayHit {
     let ray_dir_x = ray_angle.cos();
     let ray_dir_y = ray_angle.sin();
@@ -49,8 +49,6 @@ pub fn cast_ray(player: &Player, ray_angle: f32, map: &Map) -> RayHit {
     let mut wall_type = 0u8;
 
     // Avanza celda por celda (DDA) hasta encontrar una pared.
-    // El limite de 256 pasos evita cualquier bucle infinito si algo
-    // saliera mal (p.ej. jugador fuera del mapa), protegiendo contra crashes.
     for _ in 0..256 {
         if side_dist_x < side_dist_y {
             side_dist_x += delta_dist_x;
@@ -69,8 +67,7 @@ pub fn cast_ray(player: &Player, ray_angle: f32, map: &Map) -> RayHit {
         }
     }
 
-    // Distancia perpendicular (no la distancia euclidiana real) para
-    // evitar la distorsion de "ojo de pez" en los bordes de la pantalla.
+    // Distancia perpendicular 
     let perp_dist = if !side_is_y {
         (map_x as f32 - player.x + (1 - step_x) as f32 / 2.0) / ray_dir_x
     } else {

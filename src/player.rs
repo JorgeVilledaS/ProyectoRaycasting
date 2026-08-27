@@ -1,11 +1,9 @@
-// player.rs
 // Estado del jugador (posicion, angulo de vista) y la logica de movimiento
 // con deteccion de colisiones para que jamas atraviese una pared.
 
 use crate::map::Map;
 
-/// Radio de colision del jugador (un "circulo" alrededor de su posicion
-/// que nunca puede solaparse con una celda de pared).
+/// Radio de colision del jugador 
 const PLAYER_RADIUS: f32 = 0.2;
 
 pub struct Player {
@@ -32,7 +30,7 @@ impl Player {
     /// Gira al jugador `delta` radianes (usado por teclado y por el mouse).
     pub fn rotate(&mut self, delta: f32) {
         self.angle += delta;
-        // Se normaliza el angulo para que no crezca indefinidamente.
+        // Se normaliza el angulo para que sea entre 0 y 2pi
         let two_pi = std::f32::consts::TAU;
         self.angle = ((self.angle % two_pi) + two_pi) % two_pi;
     }
@@ -40,8 +38,7 @@ impl Player {
     /// Intenta mover al jugador por (dx, dy) en coordenadas de mundo.
     /// Se resuelve eje por eje (X y luego Y) para permitir "deslizarse"
     /// sobre las paredes en vez de quedar pegado si el movimiento no es
-    /// perfectamente perpendicular a un muro. Esto es lo que garantiza
-    /// que el jugador nunca atraviese paredes ni se trabe/crashee.
+    /// perfectamente perpendicular.
     pub fn try_move(&mut self, dx: f32, dy: f32, map: &Map) {
         let new_x = self.x + dx;
         if !Self::collides(new_x, self.y, map) {
