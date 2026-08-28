@@ -9,7 +9,7 @@ El "plotwist" o lo que hace interesante el nivel, es que al darle un tiro a la d
 
 ## Video de funcionamiento
 
-> _Agregar aquí el link al video de YouTube/Drive con la demo del proyecto corriendo._
+> https://youtu.be/viJFVpklRt4
 
 ## Cómo correrlo
 
