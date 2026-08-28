@@ -7,12 +7,6 @@ hitscan contra una diana animada, y un punto final del nivel.
 
 El "plotwist" o lo que hace interesante el nivel, es que al darle un tiro a la diana (Con forma de hongo) los controles se invierten, así como los colores de todo el mapa, para darle una sensación aún más extraña al nivel.
 
-![Pantalla de bienvenida](docs/screenshot_welcome.png)
-![Jugando](docs/screenshot_gameplay.png)
-![Apuntando a la diana](docs/screenshot_target.png)
-![Impacto en la diana](docs/screenshot_hit.png)
-![Nivel completado](docs/screenshot_goal.png)
-
 ## Video de funcionamiento
 
 > _Agregar aquí el link al video de YouTube/Drive con la demo del proyecto corriendo._
