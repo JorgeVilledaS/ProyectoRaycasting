@@ -1,16 +1,14 @@
 // renderer.rs
 // Convierte los resultados del raycaster en pixeles reales dentro del
 // framebuffer: una columna vertical por cada rayo lanzado, mas piso, techo,
-// y sprites tipo billboard (la diana) con oclusion correcta contra paredes.
+// y sprites tipo billboard (hongo y baliza).
 
 use crate::map::Map;
 use crate::player::Player;
 use crate::raycaster::cast_ray;
-use crate::sprite::Target;
+use crate::sprite::Billboard;
 use crate::textures;
 
-/// Aplica un sombreado simple (mas oscuro) a un color, usado para dar
-/// sensacion de profundidad segun la orientacion de la pared golpeada.
 fn shade(color: u32, factor: f32) -> u32 {
     let r = ((color >> 16) & 0xFF) as f32 * factor;
     let g = ((color >> 8) & 0xFF) as f32 * factor;
@@ -20,9 +18,7 @@ fn shade(color: u32, factor: f32) -> u32 {
 
 /// Renderiza la escena 3D completa (piso, techo, y paredes con textura
 /// procedural) para el frame actual, escribiendo directamente en `buffer`.
-/// Tambien llena `zbuffer` con la distancia perpendicular de la pared en
-/// cada columna, para que los sprites puedan ocluirse correctamente detras
-/// de paredes mas cercanas.
+
 pub fn render_scene(
     buffer: &mut [u32],
     zbuffer: &mut [f32],
@@ -70,22 +66,19 @@ pub fn render_scene(
     }
 }
 
-/// Dibuja la diana como un sprite billboard: siempre de frente a la camara,
-/// escalado por distancia y ocluido por paredes mas cercanas usando el
-/// zbuffer que dejo `render_scene`. El angulo se calcula igual que el de
-/// los rayos de pared, para que la proyeccion sea consistente (sin efectos
-/// de fisheye distintos entre paredes y sprite).
-pub fn draw_sprite(
+/// Dibuja cualquier sprite billboard (hongo, baliza, etc.)
+pub fn draw_billboard(
     buffer: &mut [u32],
     zbuffer: &[f32],
     screen_w: usize,
     screen_h: usize,
     player: &Player,
-    target: &Target,
+    sprite: &dyn Billboard,
     time: f32,
+    size_boost: f32,
 ) {
-    let rel_x = target.x - player.x;
-    let rel_y = target.y - player.y;
+    let rel_x = sprite.x() - player.x;
+    let rel_y = sprite.y() - player.y;
     let dist = (rel_x * rel_x + rel_y * rel_y).sqrt();
     if dist < 1e-4 {
         return;
@@ -93,7 +86,6 @@ pub fn draw_sprite(
 
     let angle_to_sprite = rel_y.atan2(rel_x);
     let mut angle_diff = angle_to_sprite - player.angle;
-    // Normaliza a [-PI, PI] para tomar el camino angular mas corto.
     while angle_diff > std::f32::consts::PI {
         angle_diff -= std::f32::consts::TAU;
     }
@@ -101,22 +93,14 @@ pub fn draw_sprite(
         angle_diff += std::f32::consts::TAU;
     }
 
-    // Si esta muy fuera del FOV (con margen extra para que no "aparezca"
-    // de golpe en el borde), no vale la pena procesar la columna.
     if angle_diff.abs() > player.fov {
         return;
     }
 
-    // Distancia "perpendicular" equivalente a la usada en paredes, para que
-    // el tamaño en pantalla y el orden de oclusion sean consistentes.
     let perp_dist = (dist * angle_diff.cos()).max(1e-4);
 
     let screen_x_center = (screen_w as f32 / 2.0) * (1.0 + angle_diff / (player.fov / 2.0));
-    let sprite_size = (screen_h as f32 / perp_dist).min(1e5);
-
-    // El flash de impacto agranda levemente la diana como feedback extra.
-    let size_boost = if target.is_flashing() { 1.15 } else { 1.0 };
-    let sprite_size = sprite_size * size_boost;
+    let sprite_size = ((screen_h as f32 / perp_dist).min(1e5)) * size_boost;
 
     let half_size = sprite_size / 2.0;
     let x_start = (screen_x_center - half_size).max(0.0) as i32;
@@ -128,7 +112,6 @@ pub fn draw_sprite(
         if x < 0 || x as usize >= screen_w {
             continue;
         }
-        // Oclusion: si hay una pared mas cerca que la diana en esta columna, se salta.
         if perp_dist >= zbuffer[x as usize] {
             continue;
         }
@@ -138,9 +121,20 @@ pub fn draw_sprite(
                 continue;
             }
             let v = (y as f32 - (screen_h as f32 / 2.0 - half_size)) / sprite_size.max(1.0);
-            if let Some(color) = target.sample(u, v, time) {
+            if let Some(color) = sprite.sample(u, v, time) {
                 buffer[y as usize * screen_w + x as usize] = color;
             }
         }
+    }
+}
+
+/// Invierte los colores de TODO el framebuffer (efecto "mundo invertido"
+/// tras dispararle al hongo). 
+pub fn invert_colors(buffer: &mut [u32]) {
+    for pixel in buffer.iter_mut() {
+        let r = 255 - ((*pixel >> 16) & 0xFF);
+        let g = 255 - ((*pixel >> 8) & 0xFF);
+        let b = 255 - (*pixel & 0xFF);
+        *pixel = (r << 16) | (g << 8) | b;
     }
 }

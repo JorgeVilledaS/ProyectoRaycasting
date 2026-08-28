@@ -1,0 +1,24 @@
+nohup: no se tendrá en cuenta la entrada
+    Finished `release` profile [optimized] target(s) in 0.13s
+     Running `target/release/psychoraycaster`
+warning: queue 0x5589b3fee6d0 destroyed while proxies still attached:
+  wl_buffer#21 still attached
+  wl_buffer#20 still attached
+  wl_shm_pool#19 still attached
+  wl_buffer#18 still attached
+  wl_shm_pool#17 still attached
+  wl_surface#14 still attached
+  wl_shm_pool#16 still attached
+  zxdg_toplevel_decoration_v1#15 still attached
+  xdg_toplevel#13 still attached
+  xdg_surface#12 still attached
+  xdg_wm_base#11 still attached
+  wl_buffer#10 still attached
+  wl_shm_pool#9 still attached
+  wl_surface#8 still attached
+  wl_shm#7 still attached
+  wl_compositor#6 still attached
+  wl_pointer#5 still attached
+  wl_keyboard#4 still attached
+  wl_seat#3 still attached
+  wl_registry#2 still attached
